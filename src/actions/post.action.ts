@@ -26,9 +26,12 @@ export async function createPost(content: string, image: string) {
   }
 }
 
-export async function getPosts() {
+export async function getPosts(page?: number, limit: number = 10) {
+
   try {
     const posts = await prisma.post.findMany({
+      skip: page ? (page - 1) * limit : undefined, 
+      take: page ? limit : undefined,              
       orderBy: {
         createdAt: "desc",
       },
